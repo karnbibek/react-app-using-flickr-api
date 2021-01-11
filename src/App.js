@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import flickr from './apis/flickr';
+import SearchBar from './components/SearchBar';
+require('dotenv').config();
 
-function App() {
+const App = () => {
+  const [image, setImage] = useState([]);
+
+  useEffect(() => {
+    onTermSubmit('/');
+  },[]);
+
+  const onTermSubmit = async term => {
+    const response = await flickr.get('/', {
+      params: {
+        text: term,
+        tags: term
+      }
+    });
+    console.log(response.data.photos);
+    setImage(response.data.photos.photo);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="ui container">
+      <SearchBar onFormSubmit={onTermSubmit} />
+      App
     </div>
   );
-}
+
+};
 
 export default App;
