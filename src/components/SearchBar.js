@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import searchRecommendation from '../apis/searchRecommendation';
 
 const SearchBar = ({ onFormSubmit }) => {
-    const [term, setTerm] = useState('');
+    var local = localStorage.getItem('term');
+
+    const [term, setTerm] = useState(local || '');
     const [searchResults, setSearchResults] = useState([]);
     
     const onSubmit = (event) => {
