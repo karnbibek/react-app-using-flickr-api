@@ -9,7 +9,14 @@ const SearchBar = ({ onFormSubmit }) => {
     
     const onSubmit = (event) => {
         event.preventDefault();
-        setTerm('');
+        setTerm(term);
+        setSearchResults([]);
+        onFormSubmit(term);
+    }
+    
+    const clickHandler = (term) => {
+        // event.preventDefault();
+        setTerm(term);
         setSearchResults([]);
         onFormSubmit(term);
     }
@@ -30,7 +37,7 @@ const SearchBar = ({ onFormSubmit }) => {
     const showSearchResult =
         searchResults.map(r => {
             return (
-                <div className="results" key={r._content} onClick={() => onFormSubmit(r._content)}>{r._content}</div>
+                <div className="results" key={r._content} onClick={() => clickHandler(r._content)}>{r._content}</div>
             );
         })
 
@@ -47,6 +54,7 @@ const SearchBar = ({ onFormSubmit }) => {
                             type="text"
                             value={term}
                             onChange={onInputChange}
+                            autoComplete="on"
                         />
                         <i className="search icon"></i>
                     </div>

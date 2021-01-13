@@ -19,6 +19,7 @@ const Groups = () => {
             // console.log(response);
         }
         renderResults();
+        renderChart();
     }, [term])
 
     const renderGroups = () => {
