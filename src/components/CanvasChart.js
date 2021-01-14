@@ -7,7 +7,6 @@ const CanvasChart = ({ results }) => {
     const [totalPhoto, setTotalPhoto] = useState([]);
     const [groupNames, setGroupNames] = useState([]);
     const [arrayLength, setArrayLength] = useState(0);
-    // console.log(results);
     var array = [];
     var names = [];
     const resulting = async () => results.groups.group.map(g => {
@@ -18,30 +17,27 @@ const CanvasChart = ({ results }) => {
                 }
             });
             if (response.data.photos) {
-            array.push(response.data.photos.total);
-            // setTotalPhoto([...totalPhoto, response.data.photos.total]);
-            // console.log(response.data.photos);
-            // console.log(g.name);
-            names.push(g.name);
-            setGroupNames([names]);
-            // console.log(array);
-            // const totalArray = [...totalPhoto, response.data.photos.total];
-            setTotalPhoto([array]);
-            setArrayLength(array.length);
-            // console.log(totalPhoto);
+                array.push(response.data.photos.total);
+                // setTotalPhoto([...totalPhoto, response.data.photos.total]);
+                names.push(g.name);
+                setGroupNames([names]);
+                // console.log(array);
+                // const totalArray = [...totalPhoto, response.data.photos.total];
+                setTotalPhoto([array]);
+                setArrayLength(array.length);
+            }
         }
-    }
-    return getGroupDetails();
-})
-
-// console.log(arrayLength);
+        return getGroupDetails();
+    })
 
     useEffect(() => {
-        // setGroupDetail(response.data);
+        if (results.groups.group.length === 0) {
+            return null;
+        }
         resulting();
-        // getGroupDetails();
+        // eslint-disable-next-line
     }, [results]);
-    
+
     const renderChart = () => {
         // console.log(totalPhoto[0]);
         if (totalPhoto.length > 0) {
@@ -59,11 +55,11 @@ const CanvasChart = ({ results }) => {
                 ]
             }
 
-            const options = { }
+            const options = {}
             // console.log(barData.datasets);
             return (
-                <div className="chart card" style={{margin: "20px"}}>
-                    <h2 style={{textAlign:"center"}}>No. of Photos in Groups vs Names</h2>
+                <div className="chart card" style={{ margin: "20px" }}>
+                    <h2 style={{ textAlign: "center" }}>No. of Photos in Groups vs Names</h2>
                     <Bar data={barData} options={options} />
                 </div>
             );
@@ -71,12 +67,15 @@ const CanvasChart = ({ results }) => {
             return (<div>No items to show</div>);
         }
     }
-    if(totalPhoto[0] && totalPhoto[0].length === arrayLength){
-    return (
-        <div>{renderChart()}</div>
-    );
+    if(results.groups.group.length === 0) {
+        return <h2>No data found. Please search with another keyword.</h2>
     }
-    // console.log(totalPhoto[0])
+
+    if (totalPhoto[0] && totalPhoto[0].length === arrayLength) {
+        return (
+            <div>{renderChart()}</div>
+        );
+    }
     return (<h3>Loading Charts...</h3>);
 }
 

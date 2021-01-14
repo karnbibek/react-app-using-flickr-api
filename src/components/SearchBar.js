@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import searchRecommendation from '../apis/searchRecommendation';
+import './SearchBar.css';
 
 const SearchBar = ({ onFormSubmit }) => {
     var local = localStorage.getItem('term');
@@ -14,8 +16,8 @@ const SearchBar = ({ onFormSubmit }) => {
         onFormSubmit(term);
     }
     
-    const clickHandler = (term) => {
-        // event.preventDefault();
+    const clickHandler = (event, term) => {
+        event.preventDefault();
         setTerm(term);
         setSearchResults([]);
         onFormSubmit(term);
@@ -30,24 +32,26 @@ const SearchBar = ({ onFormSubmit }) => {
         });
         if (response.data.tags) {
             // console.log(response.data.tags.tag.slice(0, 10));
-            setSearchResults(response.data.tags.tag.slice(0, 10));
+            setSearchResults(response.data.tags.tag.slice(0, 6));
         }
     };
 
     const showSearchResult =
         searchResults.map(r => {
             return (
-                <div className="results" key={r._content} onClick={() => clickHandler(r._content)}>{r._content}</div>
+                <ul key={r._content}>
+                    <li onClick={(event) => clickHandler(event,r._content)}>{r._content}</li>
+                </ul>
             );
         })
 
 
     return (
         <div className="search-bar ui segment" style={{marginBottom:"20px"}}>
-            <form onSubmit={onSubmit} className="ui form">
+            <form onSubmit={onSubmit} className="ui form center">
                 <div className="field">
                 <label>Search</label>
-                <div className="ui category search">
+                {/* <div className="ui search">
                     <div className="ui icon input">
                         <input
                             className="prompt"
@@ -59,7 +63,12 @@ const SearchBar = ({ onFormSubmit }) => {
                         <i className="search icon"></i>
                     </div>
                 </div>
-                        {showSearchResult}
+                    <div className="results">hello</div> */}
+                        {/* {showSearchResult} */}
+                        <div className="searched">
+                            <input className="queryy" type="text" value={term} onChange={onInputChange} />
+                            {showSearchResult}
+                        </div>
                 </div>
             </form>
         </div>
