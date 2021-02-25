@@ -12,6 +12,7 @@ const App = () => {
 
   return (
     <div className="ui container">
+      {/* <SearchBar /> */}
       <SearchBar onFormSubmit={onTermSubmit} />
     </div>
   );
